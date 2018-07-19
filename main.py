@@ -1,16 +1,17 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-from flask import Flask
+from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
+from forms import LoginForm, RegistrationForm
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql7248339:XX1etS2T8C@sql7.freemysqlhosting.net:3306/sql7248339'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost:3306/python'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = '2.7.0Kaaris'
 
 db = SQLAlchemy(app)
 
@@ -18,6 +19,9 @@ class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     image = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Team %r>' % self.name
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,14 +55,18 @@ class Pronostic(db.Model):
 
 @app.route('/')
 def index():
-    team = Team.query.all()
-    # print('h')
-    # pprint(team)
-    return jsonify(team)
+    teams = Team.query.all()
+    return render_template('teams.html', teams=teams)
 
 @app.route('/test')
 def test():
     return "test"
+
+@app.route('/register')
+def register():
+    form = RegistrationForm()
+
+    return render_template('auth/register.html', form=form, title='Création d\'un compte')
 
 if __name__ == '__main__':
     app.run(debug=True)
