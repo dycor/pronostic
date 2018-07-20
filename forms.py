@@ -4,6 +4,7 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, TextField, SelectField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.fields.html5 import DateField, TimeField
 
 
 class RegistrationForm(FlaskForm):
@@ -42,6 +43,8 @@ class CreateMatchForm(FlaskForm):
     """
     Form for create a match
     """
+    dateMatch = DateField('Date du match', format='%d-%m-%Y')
+    timeMatch = TimeField('Heure du match')
     coteMatchDom = StringField('Cote match domicile', validators=[DataRequired()])
     coteMatchExt = StringField('Cote match extérieur', validators=[DataRequired()])
     submit = SubmitField('Valider')

@@ -1,25 +1,31 @@
 <h1>Création de match</h1>
 <hr>
-<p>Equipe domicile</p>
-<form>
+<form action="#">
+    {{form.dateMatch.label}}
+    {{form.dateMatch}}
+    <br>
+    {{form.timeMatch.label}}
+    {{form.timeMatch}}
+
+    <h2>Equipe domicile</h2>
     <select name="choiceTeamDom" id="">
         {% for team in teams %}
             <option value="{{team.id}}">{{team.name}}</option>
         {% endfor %}
     </select>
-</form>
-{{form.coteMatchDom.label}}
-{{form.coteMatchDom}}
-<br>
-<p>Equipe extérieur</p>
-<form>
+    <br>
+    {{form.coteMatchDom.label}}
+    {{form.coteMatchDom}}
+    <br>
+    <h2>Equipe extérieur</h2>
     <select name="choiceTeamExt" id="">
         {% for team in teams %}
             <option value="{{team.id}}">{{team.name}}</option>
         {% endfor %}
     </select>
+    <br>
+    {{form.coteMatchExt.label}}
+    {{form.coteMatchExt}}
+    <br>
+    {{form.submit}}
 </form>
-{{form.coteMatchExt.label}}
-{{form.coteMatchExt}}
-<br>
-{{form.submit}}

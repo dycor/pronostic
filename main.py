@@ -45,6 +45,8 @@ class Match(db.Model):
     second_team_id = db.Column(db.Integer(), db.ForeignKey('team.id'))
     first_team_score = db.Column(db.Integer())
     second_team_score = db.Column(db.Integer())
+    first_team_cote = db.Column(db.Integer())
+    second_team_cote = db.Column(db.Integer())
 
 
 class Pronostic(db.Model):
@@ -71,10 +73,22 @@ def register():
     form = RegistrationForm()
     return render_template('auth/register.html', form=form, title='Création d\'un compte')
 
-@app.route('/createMatch')
+@app.route('/createMatch', methods=["GET", "POST"])
 def createMatch():
     form = CreateMatchForm()
     teams = Team.query.all()
+    if form.validate_on_submit():
+        match = Match(
+            day = form.dateMatch.data,
+            time = form.timeMatch.data,
+            first_team_score = 0,
+            second_team_score = 0,
+            first_team_cote = form.coteMatchDom.data,
+            second_team_cote = form.coteMatchExt.data
+        )
+
+        db.session.add(match)
+        db.session.commit()
     return render_template('createMatch.html', form=form, teams=teams, title='Création d\'un match')
 
 if __name__ == '__main__':
