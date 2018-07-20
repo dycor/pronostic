@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, CreateMatchForm
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost:3306/python'
@@ -70,6 +70,12 @@ def test():
 def register():
     form = RegistrationForm()
     return render_template('auth/register.html', form=form, title='Création d\'un compte')
+
+@app.route('/createMatch')
+def createMatch():
+    form = CreateMatchForm()
+    teams = Team.query.all()
+    return render_template('createMatch.html', form=form, teams=teams, title='Création d\'un match')
 
 if __name__ == '__main__':
     app.run(debug=True)

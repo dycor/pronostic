@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms import PasswordField, StringField, SubmitField, TextField, SelectField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
@@ -37,3 +37,13 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Mot de passe', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class CreateMatchForm(FlaskForm):
+    """
+    Form for create a match
+    """
+    coteMatchDom = StringField('Cote match domicile', validators=[DataRequired()])
+    coteMatchExt = StringField('Cote match extérieur', validators=[DataRequired()])
+    submit = SubmitField('Valider')
+
+

@@ -1,0 +1,25 @@
+<h1>Création de match</h1>
+<hr>
+<p>Equipe domicile</p>
+<form>
+    <select name="choiceTeamDom" id="">
+        {% for team in teams %}
+            <option value="{{team.id}}">{{team.name}}</option>
+        {% endfor %}
+    </select>
+</form>
+{{form.coteMatchDom.label}}
+{{form.coteMatchDom}}
+<br>
+<p>Equipe extérieur</p>
+<form>
+    <select name="choiceTeamExt" id="">
+        {% for team in teams %}
+            <option value="{{team.id}}">{{team.name}}</option>
+        {% endfor %}
+    </select>
+</form>
+{{form.coteMatchExt.label}}
+{{form.coteMatchExt}}
+<br>
+{{form.submit}}
