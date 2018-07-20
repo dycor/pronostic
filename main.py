@@ -81,6 +81,8 @@ def createMatch():
         match = Match(
             day = form.dateMatch.data,
             time = form.timeMatch.data,
+            first_team_id = request.form.choiceTeamDom,
+            second_team_id = request.form.choiceTeamExt,
             first_team_score = 0,
             second_team_score = 0,
             first_team_cote = form.coteMatchDom.data,
