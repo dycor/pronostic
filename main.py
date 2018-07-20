@@ -1,11 +1,11 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
-from flask import Flask,render_template
+from flask import Flask,render_template,request
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
@@ -77,6 +77,7 @@ def register():
 def createMatch():
     form = CreateMatchForm()
     teams = Team.query.all()
+
     if form.validate_on_submit():
         print('ok')
         match = Match(
@@ -99,6 +100,7 @@ def createMatch():
 
         db.session.add(match)
         db.session.commit()
+
     return render_template('createMatch.html', form=form, teams=teams, title='Création d\'un match')
 
 if __name__ == '__main__':
