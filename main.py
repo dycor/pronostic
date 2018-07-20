@@ -1,6 +1,10 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
@@ -65,7 +69,6 @@ def test():
 @app.route('/register')
 def register():
     form = RegistrationForm()
-
     return render_template('auth/register.html', form=form, title='Création d\'un compte')
 
 if __name__ == '__main__':
