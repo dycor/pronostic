@@ -78,6 +78,7 @@ def createMatch():
     form = CreateMatchForm()
     teams = Team.query.all()
     if form.validate_on_submit():
+        print('ok')
         match = Match(
             day = form.dateMatch.data,
             time = form.timeMatch.data,
@@ -88,6 +89,13 @@ def createMatch():
             first_team_cote = form.coteMatchDom.data,
             second_team_cote = form.coteMatchExt.data
         )
+
+        print(form.dateMatch.data)
+        print(form.timeMatch.data)
+        print(request.form.choiceTeamDom)
+        print(request.form.choiceTeamExt)
+        print(form.coteMatchExt)
+        print(form.coteMatchDom)
 
         db.session.add(match)
         db.session.commit()
