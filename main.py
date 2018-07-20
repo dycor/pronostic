@@ -20,8 +20,13 @@ class Team(db.Model):
     name = db.Column(db.String(100))
     image = db.Column(db.String(255))
 
-    def __repr__(self):
-        return '<Team %r>' % self.name
+    # def __repr__(self):
+    #     return '<Team %r>' % self.name
+    def __init__(self, id, name,image):
+        self.id = id
+        self.name = name
+        self.image = image
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,6 +38,17 @@ class User(db.Model):
     birthdate = db.Column(db.Date)
     admin = db.Column(db.Boolean)
 
+    def __init__(self, id, email,firstname,lastname,password,rank,birthdate,admin):
+        self.id = id
+        self.email = email
+        self.firstname = firstname
+        self.lastname = lastname
+        self.password = password
+        self.rank = rank
+        self.birthdate = birthdate
+        self.admin = admin
+
+
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     day = db.Column(db.Date())
@@ -42,6 +58,14 @@ class Match(db.Model):
     first_team_score = db.Column(db.Integer())
     second_team_score = db.Column(db.Integer())
 
+    def __init__(self, id, day, time, first_team_id, second_team_id, first_team_score, second_team_score):
+        self.id = id
+        self.day = day
+        self.time = time
+        self.first_team_id = first_team_id
+        self.second_team_id = second_team_id
+        self.first_team_score = first_team_score
+        self.second_team_score = second_team_score
 
 class Pronostic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,6 +76,14 @@ class Pronostic(db.Model):
     points = db.Column(db.Integer())
     second_team_id = db.Column(db.Integer(), db.ForeignKey('team.id'))
 
+
+    def __init__(self, first_team_score, second_team_score, user_id, match_id, points, second_team_id):
+        self.first_team_score = first_team_score
+        self.second_team_score = second_team_score
+        self.user_id = user_id
+        self.match_id = match_id
+        self.points = points
+        self.second_team_id = second_team_id
 
 @app.route('/')
 def index():
@@ -65,8 +97,12 @@ def test():
 @app.route('/register')
 def register():
     form = RegistrationForm()
-
     return render_template('auth/register.html', form=form, title='Création d\'un compte')
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    return render_template('auth/login.html', form=form, title='Log in')
 
 if __name__ == '__main__':
     app.run(debug=True)
