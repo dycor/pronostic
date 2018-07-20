@@ -1,11 +1,11 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
-from flask import Flask,render_template
+from flask import Flask,render_template,request
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
@@ -77,20 +77,23 @@ def register():
 def createMatch():
     form = CreateMatchForm()
     teams = Team.query.all()
-    if form.validate_on_submit():
-        match = Match(
-            day = form.dateMatch.data,
-            time = form.timeMatch.data,
-            first_team_id = request.form.choiceTeamDom,
-            second_team_id = request.form.choiceTeamExt,
-            first_team_score = 0,
-            second_team_score = 0,
-            first_team_cote = form.coteMatchDom.data,
-            second_team_cote = form.coteMatchExt.data
-        )
+    if request.method == 'POST':
+        # return 'h'
+        if form.validate():
+            return 'o'
+            match = Match(
+                day = form.dateMatch.data,
+                time = form.timeMatch.data,
+                first_team_id = request.form.choiceTeamDom,
+                second_team_id = request.form.choiceTeamExt,
+                first_team_score = 0,
+                second_team_score = 0,
+                first_team_cote = form.coteMatchDom.data,
+                second_team_cote = form.coteMatchExt.data
+            )
 
-        db.session.add(match)
-        db.session.commit()
+            db.session.add(match)
+            db.session.commit()
     return render_template('createMatch.html', form=form, teams=teams, title='Création d\'un match')
 
 if __name__ == '__main__':

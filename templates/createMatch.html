@@ -1,6 +1,8 @@
 <h1>Création de match</h1>
 <hr>
-<form action="#">
+<form action="/createMatch" method="POST">
+    {{ form.csrf_token }}
+
     {{form.dateMatch.label}}
     {{form.dateMatch}}
     <br>
