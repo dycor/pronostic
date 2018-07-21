@@ -1,9 +1,9 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
-# import sys
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 from flask import Flask,render_template,request
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +11,7 @@ from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from forms import LoginForm, RegistrationForm, CreateMatchForm
+import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost:3306/python'
@@ -78,26 +79,18 @@ def createMatch():
     form = CreateMatchForm()
     teams = Team.query.all()
 
-    if form.validate_on_submit():
+    if request.method == 'POST':
         print('ok')
         match = Match(
             day = form.dateMatch.data,
             time = form.timeMatch.data,
-            first_team_id = request.form.choiceTeamDom,
-            second_team_id = request.form.choiceTeamExt,
+            first_team_id = request.form.get('choiceTeamDom'),
+            second_team_id = request.form.get('choiceTeamExt'),
             first_team_score = 0,
             second_team_score = 0,
             first_team_cote = form.coteMatchDom.data,
             second_team_cote = form.coteMatchExt.data
         )
-
-        print(form.dateMatch.data)
-        print(form.timeMatch.data)
-        print(request.form.choiceTeamDom)
-        print(request.form.choiceTeamExt)
-        print(form.coteMatchExt)
-        print(form.coteMatchDom)
-
         db.session.add(match)
         db.session.commit()
 

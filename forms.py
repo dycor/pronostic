@@ -6,7 +6,6 @@ from wtforms import PasswordField, StringField, SubmitField, TextField, SelectFi
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms.fields.html5 import DateField, TimeField
 
-
 class RegistrationForm(FlaskForm):
     """
     Form for users to create new account
@@ -43,7 +42,8 @@ class CreateMatchForm(FlaskForm):
     """
     Form for create a match
     """
-    dateMatch = DateField('Date du match', format='%d-%m-%Y')
+    dateMatch = DateField('Start Date', format='%Y-%m-%d')
+    # dateMatch = DateField('Date du match', format='%d-%m-%Y')
     timeMatch = TimeField('Heure du match')
     coteMatchDom = StringField('Cote match domicile', validators=[DataRequired()])
     coteMatchExt = StringField('Cote match extérieur', validators=[DataRequired()])
