@@ -3,15 +3,15 @@
 # import settings
 import flask
 
-<<<<<<< HEAD
+
 from flask import Flask,render_template, request, redirect,url_for
-=======
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 from flask import Flask,render_template
->>>>>>> 3c6495851d02c1a07097b36656f6346bdd559a08
+
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
