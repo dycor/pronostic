@@ -105,10 +105,18 @@ def createMatch():
 @app.route('/listMatch')
 def listMatches():
     listMatches = Match.query.all()
-    query = db.session.query(Team).filter(Team.id == Match.first_team_id).first()
-    query2 = db.session.query(Team).filter(Team.id == Match.second_team_id).first()
+    # query = db.session.query(Team).filter(Team.id == Match.first_team_id).first()
+    # query2 = db.session.query(Team).filter(Team.id == Match.second_team_id).first()
 
-    return render_template('listMatch.html', listMatches=listMatches, query=query, query2=query2)
+    return render_template('listMatch.html', listMatches=listMatches)
+
+@app.route('/editMatch')
+def editMatches():
+    form = CreateMatchForm()
+    teams = Team.query.all()
+    listMatches = Match.query.all()
+    return render_template('editMatch.html', form=form, teams=teams, listMatches=listMatches)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

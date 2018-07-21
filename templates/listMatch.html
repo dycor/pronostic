@@ -2,10 +2,13 @@
 <hr>
 {% for listMatch in listMatches %}
     <h2>    
-            {{query.name}} - (côte de {{listMatch.first_team_cote}})
+            {{listMatch.first_team_id}} - (côte de {{listMatch.first_team_cote}})
         VS 
-            {{query2.name}} - (côte de {{listMatch.second_team_cote}})
+            {{listMatch.second_team_id}} - (côte de {{listMatch.second_team_cote}})
     </h2>
     <p style="color: brown">Score actuel:</p>
     <p>{{listMatch.first_team_score}} - {{listMatch.second_team_score}}</p>
+    <a href="/editMatch">
+        <input type="button" value="Editer">
+    </a>
 {% endfor %}
