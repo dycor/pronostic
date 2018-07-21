@@ -1,6 +1,7 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 # import settings
+import flask
 
 from flask import Flask,render_template, request, redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -9,47 +10,29 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from forms import LoginForm, RegistrationForm
 from flask_login import LoginManager
-# import flask_foo
 from flask_security import login_required,login_user,UserMixin,Security,SQLAlchemyUserDatastore
-# from flask.ext.login import UserMixin
-# import models
-
 from werkzeug.security import generate_password_hash, check_password_hash
-import flask
-# import flask_foo
-# import flask.ext
 from flask_bcrypt import Bcrypt
-# from passlib.hash import sha256_crypt
-# from passlib.apps import custom_app_context as pwd_context
+from datetime import datetime
+from flask import Flask, session
+from flask_session import Session
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost:3306/python'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '2.7.0Kaaris'
-app.config['SECURITY_PASSWORD_SALT'] = b"xxx"
 
 db = SQLAlchemy(app)
-# from models import User
-# User = User()
-
-bcrypt = Bcrypt(app)
-
-security = Security()
-# user_datastore = SQLAlchemyUserDatastore(db, User)
-# security.init_app(app, user_datastore)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-# import models
 #
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     image = db.Column(db.String(255))
 
-    # def __repr__(self):
-    #     return '<Team %r>' % self.name
     def __init__(self, id, name,image):
         self.id = id
         self.name = name
@@ -67,22 +50,7 @@ class User(db.Model,UserMixin):
     admin = db.Column(db.Boolean)
 
     def verify_password(self, pwd):
-        """
-        Check if hashed password matches actual password
-        """
         return self.password == pwd
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return str(self.id)
 
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -120,11 +88,11 @@ class Pronostic(db.Model):
         self.points = points
         self.second_team_id = second_team_id
 
-user_datastore = SQLAlchemyUserDatastore(db, User,None)
-security.init_app(app, user_datastore)
-
 @app.route('/')
 def index():
+    id = session.get('id')
+    # print(user)
+    return str(id)
     teams = Team.query.all()
     return render_template('teams.html', teams=teams)
 
@@ -135,13 +103,16 @@ def test():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
+
+
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     firstname=form.firstname.data,
                     lastname=form.firstname.data,
                     birthdate=form.birthdate.data,
-                    password= bcrypt.generate_password_hash(form.password.data,31)
-        )
+                    password= form.password.data,
+                    admin= 0)
+
 
         db.session.add(user)
         db.session.commit()
@@ -158,21 +129,23 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(
                 form.password.data):
-            login_user(user)
-            return 'loged'
+            session['id'] = user.id
+            session['email'] = user.email
+            session['firstname'] = user.firstname
+            session['lastname'] = user.lastname
+            session['rank'] = user.rank
+            session['birthdate'] = user.birthdate
+            session['admin'] = user.admin
+
+            return redirect(url_for('index'))
 
 
     return render_template('auth/login.html', form=form, title='Log in')
 
 @app.route("/logout")
-@login_required
 def logout():
-    logout_user()
-    return redirect('/')
-
-@login_manager.user_loader
-def get_user(ident):
-  return User.query.get(int(ident))
+    session.clear()
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
