@@ -48,6 +48,11 @@ class Match(db.Model):
     second_team_score = db.Column(db.Integer())
     first_team_cote = db.Column(db.Integer())
     second_team_cote = db.Column(db.Integer())
+    # myMatch = query.all()
+    # query2 = db.session.query(Team.name, Team.image).filter(Team.id == second_team_id)
+    # myMatch2 = query2.all()
+
+
 
 
 class Pronostic(db.Model):
@@ -95,6 +100,15 @@ def createMatch():
         db.session.commit()
 
     return render_template('createMatch.html', form=form, teams=teams, title='Création d\'un match')
+
+
+@app.route('/listMatch')
+def listMatches():
+    listMatches = Match.query.all()
+    query = db.session.query(Team).filter(Team.id == Match.first_team_id).first()
+    query2 = db.session.query(Team).filter(Team.id == Match.second_team_id).first()
+
+    return render_template('listMatch.html', listMatches=listMatches, query=query, query2=query2)
 
 if __name__ == '__main__':
     app.run(debug=True)
