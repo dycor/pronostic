@@ -1,3 +1,6 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, ValidationError,DateField
 from wtforms.validators import DataRequired, Email, EqualTo
