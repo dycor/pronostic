@@ -16,13 +16,15 @@ from flask_bcrypt import Bcrypt
 from datetime import datetime
 from flask import Flask, session
 from flask_session import Session
+from sqlalchemy import update
+from pprint import pprint
 
 #Import models
-from models.User import User
-from models.Team import Team
-from models.Match import Match
-from models.Pronostic import Pronostic
 
+from models import User
+from models import Team
+from models import Match
+from models import Pronostic
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost:3306/python'
@@ -34,6 +36,64 @@ db = SQLAlchemy(app)
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 
+
+@app.route('/match/<int:id>', methods=['GET', 'POST'])
+def addPronostic(id):
+
+    if request.method == 'POST':
+
+        pronostic = Pronostic(first_team_score=request.form['first_team_score'],
+                              second_team_score=request.form['second_team_score'],
+                              user_id=session.get('id'),
+                              match_id=id,
+                              points=0,
+                              first_team_id=request.form['first_team_id'],
+                              second_team_id=request.form['second_team_id'])
+        db.session.add(pronostic)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    else :
+        match = Match.query.filter_by(id=id).first()
+
+        first_team = Team.query.filter_by(id = match.first_team_id).first()
+        second_team = Team.query.filter_by(id = match.second_team_id).first()
+        action = "/match/"+str(match.id)
+        title = "Ajouter un pronostic"
+
+    return render_template('pronostic/pronostic.html',match = match,first_team= first_team,second_team = second_team,action =action,title = title)
+
+@app.route('/pronostic/<int:id>', methods=['GET', 'POST'])
+def updatePronostic(id):
+
+    if request.method == 'POST':
+        pronostic = Pronostic.query.filter_by(id=id).first()
+        pronostic.first_team_score = request.form['first_team_score']
+        pronostic.second_team_score = request.form['second_team_score']
+
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    else :
+
+        pronostic = Pronostic.query.filter_by(id=id).first()
+        match = Match.query.filter_by(id=pronostic.match_id).first()
+        first_team = Team.query.filter_by(id=match.first_team_id).first()
+        second_team = Team.query.filter_by(id=match.second_team_id).first()
+        action = "/pronostic/" + str(match.id)
+        title = "Modifier un pronostic"
+
+    return render_template('pronostic/pronostic.html',match = match,first_team= first_team,second_team = second_team,action =action,title = title,pronostic = pronostic)
+
+@app.route('/mypronostics')
+def mypronostics():
+
+    # pronostics = Pronostic.query.join(Match,Pronostic.match_id == Match.id)
+    # pprint(pronostics)
+    pronostics = Pronostic.query.filter_by(user_id=session.get('id')).all()
+
+    return render_template('pronostic/mypronostic.html',pronostics = pronostics)
 
 @app.route('/')
 def index():
