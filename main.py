@@ -3,10 +3,10 @@
 # import settings
 import flask
 
-# import sys
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
-#
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 from flask import Flask,render_template, request, redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -207,7 +207,7 @@ def createMatch():
         db.session.add(match)
         db.session.commit()
 
-    return render_template('createMatch.html', form=form, teams=teams, title='Création d\'un match')
+    return render_template('matchs/createMatch.html', form=form, teams=teams, title='Création d\'un match')
 
 #Lister les matchs
 @app.route('/listMatch')
@@ -221,22 +221,14 @@ def listMatches():
         match.second_team_name = team2.name
         matchDict[match.id] = match
 
-    return render_template('listMatch.html', matchs=matchs)
+    return render_template('matchs/listMatch.html', matchs=matchs)
 
 @app.route('/editMatch/<int:id>', methods=['GET', 'POST'])
 def editMatches(id):
     matchs = Match.query.filter_by(id=id).first()
-    listMatches = Team.query.join(Match, Team.id == Match.second_team_id).first()
-    return listMatches.name
-
-    return render_template('listMatch.html', listMatches=listMatches)
-
-#Editer un match
-@app.route('/editMatch')
-def editMatches():
     form = CreateMatchForm()
     teams = Team.query.all()
-    return render_template('editMatch.html', form=form, teams=teams, matchs=matchs)
+    return render_template('matchs/editMatch.html', form=form, teams=teams, matchs=matchs)
 
 if __name__ == '__main__':
     app.run(debug=True)
