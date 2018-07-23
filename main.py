@@ -104,9 +104,8 @@ def createMatch():
 
 @app.route('/listMatch')
 def listMatches():
-    listMatches = Match.query.all()
-    # query = db.session.query(Team).filter(Team.id == Match.first_team_id).first()
-    # query2 = db.session.query(Team).filter(Team.id == Match.second_team_id).first()
+    listMatches = Team.query.join(Match, Team.id == Match.second_team_id).first()
+    return listMatches.name
 
     return render_template('listMatch.html', listMatches=listMatches)
 
