@@ -9,7 +9,7 @@ import flask
 #
 
 from flask import Flask,render_template, request, redirect,url_for
-from  import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
