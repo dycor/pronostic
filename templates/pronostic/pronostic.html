@@ -2,10 +2,9 @@
 
 <form method="POST" action="{{action}}">
 
-    <input name="first_team_id" value="{{first_team.id}}">
-    <input name="second_team_id" value="{{second_team.id}}">
+    <input style="display: none" name="first_team_id" value="{{first_team.id}}">
+    <input style="display: none" name="second_team_id" value="{{second_team.id}}">
 
-    <br>
     <label>{{first_team.name}}</label>
     {% if pronostic is defined %}
         <input name="first_team_score" value="{{pronostic.first_team_score}}">
@@ -13,7 +12,6 @@
         <input name="first_team_score" >
     {% endif %}
 
-    </br>
     <label>{{second_team.name}}</label>
     {% if pronostic is defined %}
         <input name="second_team_score" value="{{pronostic.second_team_score}}">
@@ -21,7 +19,6 @@
         <input name="second_team_score" >
     {% endif %}
 
-    </br>
 
     <input id="submit" name="submit" type="submit" value="Enregistrer">
 
