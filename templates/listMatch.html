@@ -1,14 +1,14 @@
 <h1>Liste des matchs</h1>
 <hr>
-{% for listMatch in listMatches %}
+{% for match in matchs %}
     <h2>    
-            {{listMatch.first_team_id}} - (côte de {{listMatch.first_team_cote}})
+            {{match.first_team_name}} - (côte de {{match.first_team_cote}})
         VS 
-            {{listMatch.second_team_id}} - (côte de {{listMatch.second_team_cote}})
+            {{match.second_team_name}} - (côte de {{match.second_team_cote}})
     </h2>
     <p style="color: brown">Score actuel:</p>
-    <p>{{listMatch.first_team_score}} - {{listMatch.second_team_score}}</p>
-    <a href="/editMatch">
+    <p>{{match.first_team_score}} - {{match.second_team_score}}</p>
+    <a href="/editMatch/{{match.id}}">
         <input type="button" value="Editer">
     </a>
 {% endfor %}

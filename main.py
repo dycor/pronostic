@@ -212,6 +212,20 @@ def createMatch():
 #Lister les matchs
 @app.route('/listMatch')
 def listMatches():
+    matchs = Match.query.all()
+    matchDict = {}
+    for match in matchs:
+        team = Team.query.join(Match, Team.id == match.first_team_id).first()
+        team2 = Team.query.join(Match, Team.id == match.second_team_id).first()
+        match.first_team_name = team.name
+        match.second_team_name = team2.name
+        matchDict[match.id] = match
+
+    return render_template('listMatch.html', matchs=matchs)
+
+@app.route('/editMatch/<int:id>', methods=['GET', 'POST'])
+def editMatches(id):
+    matchs = Match.query.filter_by(id=id).first()
     listMatches = Team.query.join(Match, Team.id == Match.second_team_id).first()
     return listMatches.name
 
@@ -222,8 +236,7 @@ def listMatches():
 def editMatches():
     form = CreateMatchForm()
     teams = Team.query.all()
-    listMatches = Match.query.all()
-    return render_template('editMatch.html', form=form, teams=teams, listMatches=listMatches)
+    return render_template('editMatch.html', form=form, teams=teams, matchs=matchs)
 
 if __name__ == '__main__':
     app.run(debug=True)

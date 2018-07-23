@@ -4,25 +4,34 @@
     {{form.dateMatch}}
     <br>
     {{form.timeMatch.label}}
-    {{form.timeMatch}}
+    <input id="timeMatch" name="timeMatch" value="" type="time">
 
     <h2>Equipe domicile</h2>
     <select name="choiceTeamDom" id="">
         {% for team in teams %}
-            <option value="{{team.id}}">{{team.name}}</option>
+            {% if team.id == matchs.first_team_id %}
+                <option value="{{team.id}}" selected="selected">{{team.name}}</option>
+            {% else %}
+                <option value="{{team.id}}">{{team.name}}</option>
+            {% endif %}
         {% endfor %}
     </select>
     <br>
     {{form.coteMatchDom.label}}
-    {{form.coteMatchDom}}
+    <input id="coteMatchDom" name="coteMatchDom" required="" value="" type="text" placeholder="{{matchs.first_team_cote}}">    
     <br>
+
     <h2>Equipe extérieur</h2>
     <select name="choiceTeamExt" id="">
         {% for team in teams %}
-            <option value="{{team.id}}">{{team.name}}</option>
+            {% if team.id == matchs.second_team_id %}
+                <option value="{{team.id}}" selected="selected">{{team.name}}</option>
+            {% else %}
+                <option value="{{team.id}}">{{team.name}}</option>
+            {% endif %}
         {% endfor %}
     </select>
     <br>
     {{form.coteMatchExt.label}}
-    {{form.coteMatchExt}}
+    <input id="coteMatchExt" name="coteMatchExt" required="" value="" type="text" placeholder="{{matchs.second_team_cote}}">
     <br>
