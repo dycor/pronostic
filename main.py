@@ -182,17 +182,47 @@ def createMatch():
 
 @app.route('/listMatch')
 def listMatches():
-    listMatches = Team.query.join(Match, Team.id == Match.second_team_id).first()
-    return listMatches.name
+    matchs = Match.query.all()
+    matchDict = {}
+    for match in matchs:
+        team = Team.query.join(Match, Team.id == match.first_team_id).first()
+        team2 = Team.query.join(Match, Team.id == match.second_team_id).first()
+        match.first_team_name = team.name
+        match.second_team_name = team2.name
+        matchDict[match.id] = match
 
-    return render_template('listMatch.html', listMatches=listMatches)
+    return render_template('listMatch.html', matchs=matchs)
 
-@app.route('/editMatch')
-def editMatches():
+@app.route('/editMatch/<int:id>', methods=['GET', 'POST'])
+def editMatches(id):
+    matchs = Match.query.filter_by(id=id).first()
     form = CreateMatchForm()
     teams = Team.query.all()
-    listMatches = Match.query.all()
-    return render_template('editMatch.html', form=form, teams=teams, listMatches=listMatches)
+    return render_template('editMatch.html', form=form, teams=teams, matchs=matchs)
+
+# @app.route('/pronostic/<int:id>', methods=['GET', 'POST'])
+# def updatePronostic(id):
+
+#     if request.method == 'POST':
+#         pronostic = Pronostic.query.filter_by(id=id).first()
+#         pronostic.first_team_score = request.form['first_team_score']
+#         pronostic.second_team_score = request.form['second_team_score']
+
+#         db.session.commit()
+
+#         return redirect(url_for('index'))
+
+#     else :
+#         pronostic = Pronostic.query.filter_by(id=id).first()
+#         match = Match.query.filter_by(id=pronostic.match_id).first()
+#         first_team = Team.query.filter_by(id=match.first_team_id).first()
+#         second_team = Team.query.filter_by(id=match.second_team_id).first()
+#         action = "/pronostic/" + str(match.id)
+#         title = "Modifier un pronostic"
+
+
+
+#     return render_template('pronostic/pronostic.html',match = match,first_team= first_team,second_team = second_team,action =action,title = title,pronostic = pronostic)
 
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
