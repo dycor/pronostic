@@ -1,5 +1,6 @@
 <h1>Mes pronostiques :</h1>
 {% for pronostic in pronostics %}
     {{pronostic.id}}</br>
-    {{pronostic.name}}</br>
+    {{pronostic.first_team_name}}</br>
+    {{pronostic.second_team_name}}</br>
 {% endfor %}

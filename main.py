@@ -89,9 +89,14 @@ def updatePronostic(id):
 @app.route('/mypronostics')
 def mypronostics():
 
-    # pronostics = Pronostic.query.join(Match,Pronostic.match_id == Match.id)
-    # pprint(pronostics)
     pronostics = Pronostic.query.filter_by(user_id=session.get('id')).all()
+    pronos = {}
+    for pronostic in pronostics:
+        team = Team.query.join(Match, Team.id == Match.first_team_id).first()
+        team2 = Team.query.join(Match, Team.id == Match.second_team_id).first()
+        pronostic.first_team_name = team.name
+        pronostic.second_team_name = team2.name
+        pronos[pronostic.id] = pronostic
 
     return render_template('pronostic/mypronostic.html',pronostics = pronostics)
 
