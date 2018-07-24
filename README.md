@@ -14,3 +14,14 @@ Voici la liste des paquets :
  - flask-login
  - flask-security
  - flask-session
+ 
+# Création de la main de base de données
+
+A la racine du projet du il faut lancer le shell python puis taper les commandes suivantes :
+
+ **from models import db**
+ **db.create_all()**
+ 
+# Lancer l'application
+
+ **python main.py**
