@@ -1,25 +1,38 @@
-<h1>S'enregistrer</h1>
-<br>
-<form method="POST" action="/register">
-    {{ form.csrf_token }}
-    {{form.email.label}}
-    {{form.email}}
-    </br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="static/app.css">
 
-    {{form.firstname.label}}
-    {{form.firstname}}
-    </br>
-    {{form.lastname.label}}
-    {{form.lastname}}
-    </br>
-    {{form.birthdate.label}}
-    {{form.birthdate}} <span>ex: 22-06-1990</span>
-    </br>
-    {{form.password.label}}
-    {{form.password}}
-    </br>
-    {{form.confirm_password.label}}
-    {{form.confirm_password}}
-    </br>
-    {{form.submit}}
-</form>
+    <title>Document</title>
+</head>
+<body>
+    <h1>S'enregistrer</h1>
+    <br>
+    <form method="POST" action="/register">
+        {{ form.csrf_token }}
+        {{form.email.label}}
+        {{form.email}}
+        </br>
+    
+        {{form.firstname.label}}
+        {{form.firstname}}
+        </br>
+        {{form.lastname.label}}
+        {{form.lastname}}
+        </br>
+        {{form.birthdate.label}}
+        {{form.birthdate}}
+        </br>
+        {{form.password.label}}
+        {{form.password}}
+        </br>
+        {{form.confirm_password.label}}
+        {{form.confirm_password}}
+        </br>
+        {{form.submit}}
+    </form>            
+</body>
+</html>

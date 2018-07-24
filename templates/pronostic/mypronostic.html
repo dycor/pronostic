@@ -1,17 +1,29 @@
-<h1>{{title}}</h1>
-{% for pronostic in pronostics %}
-    <section>
-        <div>
-            <span>{{pronostic.first_team_name}}</span>
-            <span> {{pronostic.first_team_score}}</span>
-            <!-- Drapeau du pays-->
-            <img src="">
-        </div>
-        <div>
-            <span> {{pronostic.second_team_name}}</span>
-            <span> {{pronostic.second_team_score}}</span>
-               <!-- Drapeau du pays-->
-            <img src="">
-        </div>
-    </section>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/app.css">
+</head>
+<body>
+    <h1>{{title}}</h1>
+    {% for pronostic in pronostics %}
+        <section>
+            <div>
+                <span>{{pronostic.first_team_name}}</span>
+                <span> {{pronostic.first_team_score}}</span>
+                <!-- Drapeau du pays-->
+                <img src="">
+            </div>
+            <div>
+                <span> {{pronostic.second_team_name}}</span>
+                <span> {{pronostic.second_team_score}}</span>
+                    <!-- Drapeau du pays-->
+                <img src="">
+            </div>
+        </section>
+    {% endfor %}            
+</body>
+</html>
